@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlinkBrain - Register</title>
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h1>BlinkBrain</h1>
+        <div class="form-label">✍️ Create a new account</div>
+        <p class="subtitle">Join us and start playing!</p>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" name="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="registerName">Display Name</label>
+                <input type="text" id="registerName" name="displayName" placeholder="Your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input type="password" id="registerPassword" name="password" placeholder="Choose a password (min 6 chars)" required>
+            </div>
+
+            <button type="submit">Register</button>
+            <div class="toggle-link">
+                Already have an account? <a href="/login.html">Login here</a>
+            </div>
+        </form>
+
+        <div class="already-registered" id="alreadyRegistered">
+            <p>📧 This email is already registered!</p>
+            <button class="login-btn" onclick="window.location.href='/login.html'">Go to Login</button>
+        </div>
+    </div>
+
+    <script>
+        function showError(msg) {
+            const error = document.getElementById('error');
+            error.textContent = msg;
+            error.classList.add('show');
+            setTimeout(() => error.classList.remove('show'), 5000);
+        }
+
+        function showSuccess(msg) {
+            const success = document.getElementById('success');
+            success.textContent = msg;
+            success.classList.add('show');
+        }
+
+        function showAlreadyRegistered() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('alreadyRegistered').style.display = 'block';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('alreadyRegistered').style.display = 'none';
+        }
+
+        const emailInput = document.getElementById('registerEmail');
+        emailInput.addEventListener('blur', async () => {
+            const email = emailInput.value.trim();
+            if (!email) return;
+
+            try {
+                const res = await fetch('/api/check-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                });
+
+                const data = await res.json();
+                if (data.exists) {
+                    showAlreadyRegistered();
+                } else {
+                    showRegisterForm();
+                }
+            } catch (err) {
+                console.error('Email check failed:', err);
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('registerEmail').value;
+            const displayName = document.getElementById('registerName').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (password.length < 6) {
+                showError('❌ Password must be at least 6 characters');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, displayName, password }),
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    showSuccess('✅ Registration successful! Redirecting...');
+                    setTimeout(() => window.location.href = '/index.html', 1500);
+                } else {
+                    showError('❌ ' + (data.error || 'Registration failed'));
+                }
+            } catch (err) {
+                showError('❌ Connection error: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlinkBrain - Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a0f2e 50%, #2d1b4e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 20% 50%, rgba(200, 50, 200, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(100, 200, 255, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, 50px); }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .auth-container {
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(25px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 60px 50px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.3),
+                        inset 0 0 80px rgba(255, 255, 255, 0.05),
+                        0 0 60px rgba(200, 50, 200, 0.15);
+            animation: slideInScale 0.6s ease-out;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            color: #fff;
+            margin-bottom: 12px;
+            text-align: center;
+            text-shadow: 0 0 40px rgba(200, 50, 200, 0.5), 0 0 80px rgba(100, 200, 255, 0.25);
+            font-weight: 900;
+            letter-spacing: 3px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.75);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 0.95rem;
+            text-shadow: 0 0 15px rgba(100, 200, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+            letter-spacing: 0.3px;
+        }
+
+        .form-label {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, #c77dff 0%, #7209b7 100%);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin: 15px auto 25px;
+            box-shadow: 0 0 30px rgba(194, 125, 255, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.1);
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+            animation: fadeInUp 0.8s ease-out 0.05s both;
+            width: fit-content;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        label {
+            display: block;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-shadow: 0 0 5px rgba(100, 200, 255, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.08);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: rgba(200, 50, 200, 0.6);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2), 
+                        inset 0 1px 2px rgba(255, 255, 255, 0.15),
+                        0 0 30px rgba(200, 50, 200, 0.3),
+                        inset 0 0 20px rgba(200, 50, 200, 0.1);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 50%, #ff0066 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-top: 10px;
+            box-shadow: 0 10px 40px rgba(255, 107, 107, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(255, 107, 107, 0.5), 
+                        inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                        0 0 40px rgba(255, 107, 107, 0.5);
+            filter: brightness(1.15);
+        }
+
+        button:active {
+            transform: translateY(-2px);
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+            letter-spacing: 0.2px;
+        }
+
+        .toggle-link a {
+            color: #ffd54a;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-shadow: 0 0 10px rgba(255, 213, 74, 0.3);
+        }
+
+        .toggle-link a:hover {
+            color: #ffff99;
+            text-shadow: 0 0 20px rgba(255, 255, 153, 0.6);
+        }
+
+        .error {
+            background: rgba(255, 68, 68, 0.15);
+            color: #ff9999;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border-left: 5px solid #ff6b6b;
+            display: none;
+            animation: slideInScale 0.3s ease;
+            font-size: 0.95rem;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.2);
+            font-weight: 500;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .success {
+            background: rgba(107, 203, 119, 0.15);
+            color: #99ff99;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border-left: 5px solid #6bcb77;
+            display: none;
+            animation: slideInScale 0.3s ease;
+            font-size: 0.95rem;
+            box-shadow: 0 0 30px rgba(107, 203, 119, 0.2);
+            font-weight: 500;
+        }
+
+        .success.show {
+            display: block;
+        }
+
+        .already-registered {
+            display: none;
+            text-align: center;
+            animation: slideInScale 0.3s ease;
+        }
+
+        .already-registered p {
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .already-registered .login-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #6bcb77 0%, #4dac76 50%, #3d9b6d 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 40px rgba(107, 203, 119, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .already-registered .login-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(107, 203, 119, 0.5), 
+                        inset 0 1px 2px rgba(255, 255, 255, 0.3),
+                        0 0 40px rgba(107, 203, 119, 0.5);
+            filter: brightness(1.15);
+        }
+
+        .already-registered .login-btn:active {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h1>BlinkBrain</h1>
+        <div class="form-label">✍️ Create a new account</div>
+        <p class="subtitle">Join us and start playing!</p>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="registerEmail">Email</label>
+                <input type="email" id="registerEmail" name="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="registerName">Display Name</label>
+                <input type="text" id="registerName" name="displayName" placeholder="Your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="registerPassword">Password</label>
+                <input type="password" id="registerPassword" name="password" placeholder="Choose a password (min 6 chars)" required>
+            </div>
+
+            <button type="submit">Register</button>
+            <div class="toggle-link">
+                Already have an account? <a href="/login.html">Login here</a>
+            </div>
+        </form>
+
+        <div class="already-registered" id="alreadyRegistered">
+            <p>📧 This email is already registered!</p>
+            <button class="login-btn" onclick="window.location.href='/login.html'">Go to Login</button>
+        </div>
+    </div>
+
+    <script>
+        function showError(msg) {
+            const error = document.getElementById('error');
+            error.textContent = msg;
+            error.classList.add('show');
+            setTimeout(() => error.classList.remove('show'), 5000);
+        }
+
+        function showSuccess(msg) {
+            const success = document.getElementById('success');
+            success.textContent = msg;
+            success.classList.add('show');
+        }
+
+        function showAlreadyRegistered() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('alreadyRegistered').style.display = 'block';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('alreadyRegistered').style.display = 'none';
+        }
+
+        const emailInput = document.getElementById('registerEmail');
+        emailInput.addEventListener('blur', async () => {
+            const email = emailInput.value.trim();
+            if (!email) return;
+
+            try {
+                const res = await fetch('/api/check-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                });
+
+                const data = await res.json();
+                if (data.exists) {
+                    showAlreadyRegistered();
+                } else {
+                    showRegisterForm();
+                }
+            } catch (err) {
+                console.error('Email check failed:', err);
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('registerEmail').value;
+            const displayName = document.getElementById('registerName').value;
+            const password = document.getElementById('registerPassword').value;
+
+            if (password.length < 6) {
+                showError('❌ Password must be at least 6 characters');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, displayName, password }),
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    showSuccess('✅ Registration successful! Redirecting...');
+                    setTimeout(() => window.location.href = '/index.html', 1500);
+                } else {
+                    showError('❌ ' + (data.error || 'Registration failed'));
+                }
+            } catch (err) {
+                showError('❌ Connection error: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>

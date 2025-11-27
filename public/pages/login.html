@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlinkBrain - Login</title>
+    <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h1>BlinkBrain</h1>
+        <div class="form-label">📝 Login to your account</div>
+        <p class="subtitle">Enter your credentials below</p>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" name="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" name="password" placeholder="Your password" required>
+            </div>
+
+            <button type="submit">Login</button>
+            <div class="toggle-link">
+                Don't have an account? <a href="/register.html">Register here</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function showError(msg) {
+            const error = document.getElementById('error');
+            error.textContent = msg;
+            error.classList.add('show');
+            setTimeout(() => error.classList.remove('show'), 5000);
+        }
+
+        function showSuccess(msg) {
+            const success = document.getElementById('success');
+            success.textContent = msg;
+            success.classList.add('show');
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await res.json();
+
+                if (res.ok) {
+                    showSuccess('✅ Login successful! Redirecting...');
+                    setTimeout(() => window.location.href = '/index.html', 1500);
+                } else {
+                    showError('❌ ' + (data.error || 'Login failed'));
+                }
+            } catch (err) {
+                showError('❌ Connection error: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>
