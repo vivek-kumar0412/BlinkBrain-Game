@@ -477,6 +477,7 @@ function handleGameOver(reason) {
     if (score > highScore) {
         highScore = score;
         highScoreDisplay.textContent = "High Score: " + highScore;
+        celebrateNewHighScore();
         if (typeof saveHighScore === 'function') {
             saveHighScore(highScore);
         }
@@ -514,6 +515,74 @@ function userFlash(btn) {
     if (btn) {
         btn.classList.add("flash");
         setTimeout(() => btn.classList.remove("flash"), 180);
+    }
+}
+
+function celebrateNewHighScore() {
+    // Trigger strong celebratory haptics
+    triggerHaptic([50, 30, 50, 30, 100]);
+    
+    // Play ascending celebratory tone sequence
+    const celebrationTones = [523.25, 659.25, 783.99]; // C5, E5, G5
+    celebrationTones.forEach((freq, index) => {
+        setTimeout(() => {
+            playTone(freq, 150, "sine", 0.08);
+        }, index * 160);
+    });
+    
+    // Animate high score display
+    if (highScoreDisplay) {
+        highScoreDisplay.classList.add("high-score-pop");
+        setTimeout(() => {
+            highScoreDisplay.classList.remove("high-score-pop");
+        }, 1000);
+    }
+    
+    // Generate confetti particles
+    createConfetti();
+}
+
+function createConfetti() {
+    const container = document.getElementById("confetti-container");
+    if (!container) return;
+    
+    const particleCount = 25;
+    const colors = ["#c77dff", "#7209b7", "#b5179e", "#f72585", "#4361ee", "#3a86ff"];
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement("div");
+        particle.className = "confetti-particle";
+        
+        const size = Math.random() * 8 + 4; // 4-12px
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const startX = Math.random() * window.innerWidth;
+        const startY = -10;
+        const endX = startX + (Math.random() - 0.5) * 200;
+        const duration = Math.random() * 1000 + 2000; // 2-3 seconds
+        const delay = Math.random() * 100; // stagger start
+        
+        particle.style.cssText = `
+            position: fixed;
+            width: ${size}px;
+            height: ${size}px;
+            background-color: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 ${size}px ${color};
+            left: ${startX}px;
+            top: ${startY}px;
+            animation: confettiFall ${duration}ms linear ${delay}ms forwards;
+        `;
+        
+        // Store end position as custom property for animation
+        particle.style.setProperty("--end-x", `${endX}px`);
+        
+        container.appendChild(particle);
+        
+        // Remove particle after animation
+        setTimeout(() => {
+            particle.remove();
+        }, duration + delay + 100);
     }
 }
 
