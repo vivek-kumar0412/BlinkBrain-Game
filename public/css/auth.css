@@ -16,6 +16,60 @@ body {
     position: relative;
 }
 
+.auth-scene {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(3px);
+    opacity: 0.42;
+    animation: drift 16s ease-in-out infinite;
+}
+
+.orb-a {
+    width: 280px;
+    height: 280px;
+    top: -60px;
+    left: -70px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 213, 74, 0.55), rgba(255, 213, 74, 0));
+}
+
+.orb-b {
+    width: 320px;
+    height: 320px;
+    right: -80px;
+    top: 18%;
+    background: radial-gradient(circle at 30% 30%, rgba(168, 140, 255, 0.5), rgba(168, 140, 255, 0));
+    animation-delay: -4s;
+}
+
+.orb-c {
+    width: 280px;
+    height: 280px;
+    left: 28%;
+    bottom: -90px;
+    background: radial-gradient(circle at 30% 30%, rgba(98, 199, 224, 0.45), rgba(98, 199, 224, 0));
+    animation-delay: -9s;
+}
+
+.grid-glow {
+    position: absolute;
+    inset: -20%;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 36px 36px;
+    transform: perspective(700px) rotateX(65deg) translateY(22%);
+    transform-origin: center;
+    animation: scan 14s linear infinite;
+}
+
 body::before {
     content: '';
     position: fixed;
@@ -25,6 +79,31 @@ body::before {
                 radial-gradient(circle at 80% 80%, rgba(100, 200, 255, 0.1) 0%, transparent 50%);
     animation: float 20s ease-in-out infinite;
     z-index: -1;
+}
+
+@keyframes drift {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+        transform: translate3d(0, -26px, 0) scale(1.06);
+    }
+}
+
+@keyframes scan {
+    0% {
+        opacity: 0.15;
+        transform: perspective(700px) rotateX(65deg) translateY(22%);
+    }
+    50% {
+        opacity: 0.3;
+        transform: perspective(700px) rotateX(65deg) translateY(18%);
+    }
+    100% {
+        opacity: 0.15;
+        transform: perspective(700px) rotateX(65deg) translateY(22%);
+    }
 }
 
 @keyframes float {
@@ -77,6 +156,28 @@ body::before {
                 inset 0 0 80px rgba(255, 255, 255, 0.05),
                 0 0 60px rgba(200, 50, 200, 0.15);
     animation: slideInScale 0.6s ease-out;
+    position: relative;
+    isolation: isolate;
+}
+
+.auth-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.1) 48%, transparent 65%);
+    transform: translateX(-140%);
+    animation: sheen 5.5s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes sheen {
+    0% {
+        transform: translateX(-140%);
+    }
+    100% {
+        transform: translateX(140%);
+    }
 }
 
 h1 {
@@ -88,6 +189,38 @@ h1 {
     font-weight: 900;
     letter-spacing: 3px;
     animation: fadeInDown 0.8s ease-out;
+    display: flex;
+    justify-content: center;
+    gap: 1px;
+    flex-wrap: wrap;
+}
+
+.title-char {
+    display: inline-block;
+    animation: titleRise 0.8s cubic-bezier(0.2, 0.9, 0.2, 1) backwards, titleBreath 3s ease-in-out infinite;
+}
+
+@keyframes titleRise {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes titleBreath {
+    0%,
+    100% {
+        transform: translateY(0);
+        text-shadow: 0 0 16px rgba(255, 213, 74, 0.2), 0 0 35px rgba(100, 200, 255, 0.22);
+    }
+    50% {
+        transform: translateY(-1px);
+        text-shadow: 0 0 22px rgba(255, 213, 74, 0.35), 0 0 45px rgba(100, 200, 255, 0.3);
+    }
 }
 
 .subtitle {
@@ -287,4 +420,20 @@ button:active {
 
 .already-registered .login-btn:active {
     transform: translateY(-2px);
+}
+
+@media (max-width: 520px) {
+    .auth-container {
+        padding: 44px 24px;
+        border-radius: 18px;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+        letter-spacing: 1.5px;
+    }
+
+    .form-label {
+        font-size: 0.82rem;
+    }
 }

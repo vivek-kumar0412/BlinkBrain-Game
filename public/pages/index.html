@@ -85,6 +85,46 @@
         .logout-btn i {
             font-size: 1rem;
         }
+
+        @media (max-width: 640px) {
+            .user-info {
+                top: 12px;
+                left: 12px;
+                gap: 10px;
+                max-width: calc(100vw - 24px);
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                flex: 0 0 auto;
+            }
+
+            .user-info .label {
+                font-size: 0.65rem;
+            }
+
+            .user-info .name {
+                font-size: 0.9rem;
+                max-width: 160px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .logout-btn {
+                top: 12px;
+                right: 12px;
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                border-radius: 999px;
+            }
+
+            .logout-btn i {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -104,8 +144,18 @@
     </button>
 
     <h1>BlinkBrain</h1>
-   <h2>Press any key to start</h2>
-<h3 id="high-score">High Score: 0</h3>
+    <h2>Tap Start or press any key to begin</h2>
+    <div class="game-controls">
+        <button id="mode-btn" class="mode-btn" type="button">Mode: Solo</button>
+        <button id="difficulty-btn" class="mode-btn" type="button">Difficulty: Normal</button>
+        <button id="timer-btn" class="mode-btn" type="button">Timer: Off</button>
+        <button id="sound-btn" class="mode-btn" type="button">Sound: On</button>
+        <button id="pause-btn" class="mode-btn" type="button">Pause</button>
+        <button id="start-btn" class="start-btn" type="button">Start Game</button>
+    </div>
+    <h3 id="player-score" class="player-score hidden">P1: 0 | P2: 0</h3>
+    <h3 id="timer-display" class="timer-display hidden">Time: --</h3>
+    <h3 id="high-score">High Score: 0</h3>
     <div class="btn-container">
         <div class="line-one">
             <div class="btn red " type="button" id="red"></div>
@@ -117,9 +167,6 @@
         </div>
 
     </div>
-
-
-    <script src="./app.js"></script>
     <script>
         // Check auth on page load
         window.addEventListener('load', async () => {

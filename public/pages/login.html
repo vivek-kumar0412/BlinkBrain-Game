@@ -7,8 +7,15 @@
     <link rel="stylesheet" href="/css/auth.css">
 </head>
 <body>
+    <div class="auth-scene" aria-hidden="true">
+        <span class="orb orb-a"></span>
+        <span class="orb orb-b"></span>
+        <span class="orb orb-c"></span>
+        <span class="grid-glow"></span>
+    </div>
+
     <div class="auth-container">
-        <h1>BlinkBrain</h1>
+        <h1 id="title">BlinkBrain</h1>
         <div class="form-label">📝 Login to your account</div>
         <p class="subtitle">Enter your credentials below</p>
 
@@ -73,6 +80,22 @@
                 showError('❌ Connection error: ' + err.message);
             }
         });
+
+        (function animateTitle() {
+            const title = document.getElementById('title');
+            if (!title) return;
+
+            const text = title.textContent || '';
+            title.textContent = '';
+
+            Array.from(text).forEach((ch, idx) => {
+                const span = document.createElement('span');
+                span.className = 'title-char';
+                span.style.animationDelay = `${idx * 0.07}s`;
+                span.textContent = ch === ' ' ? '\u00A0' : ch;
+                title.appendChild(span);
+            });
+        })();
     </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 {
-  "name": "simon-game",
+  "name": "BlinkBrain-Game",
   "version": "1.0.0",
   "description": "Simon Game with user accounts and high scores",
   "main": "server.js",
